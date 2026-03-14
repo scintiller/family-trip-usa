@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 3 行程单 - 名校与城市文化之旅</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: linear-gradient(135deg, #FFF9E6 0%, #FFF5D6 100%);
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+      background: white;
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #FFB800 0%, #E85D04 100%);
+      border-radius: 20px;
+      margin-bottom: 40px;
+      color: white;
+    }
+    
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .header-subtitle {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .header-info {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .header-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    
+    /* Hotel Departure */
+    .hotel-departure {
+      background: linear-gradient(135deg, #E8F4FD 0%, #D6ECFF 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-left: 4px solid #0077B6;
+    }
+    
+    .hotel-departure h3 {
+      color: #0077B6;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    
+    .hotel-departure-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .hotel-departure-content span {
+      font-size: 14px;
+      color: #333;
+    }
+    
+    .hotel-departure-content .arrow {
+      color: #0077B6;
+      font-weight: bold;
+    }
+    
+    .hotel-departure-content .distance {
+      background: #0077B6;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    
+    /* Attraction Card */
+    .attraction {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+    }
+    
+    .attraction-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    
+    .attraction-content {
+      padding: 25px;
+    }
+    
+    .attraction-time {
+      display: inline-block;
+      background: linear-gradient(135deg, #FFB800 0%, #E85D04 100%);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+    
+    .attraction-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 5px;
+    }
+    
+    .attraction-name-en {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 15px;
+    }
+    
+    .attraction-description {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+    
+    .attraction-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .highlight-tag {
+      background: #FFF5E6;
+      color: #E85D04;
+      padding: 6px 14px;
+      border-radius: 15px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .attraction-tips {
+      background: #F8F6F1;
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+    }
+    
+    .attraction-tips strong {
+      color: #E85D04;
+    }
+    
+    /* Distance Indicator */
+    .distance-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      margin: 10px 0;
+    }
+    
+    .distance-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, #FFB800, #E85D04);
+    }
+    
+    .distance-info {
+      background: linear-gradient(135deg, #FFB800 0%, #E85D04 100%);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 13px;
+      text-align: center;
+      margin: 0 15px;
+    }
+    
+    .distance-info .to {
+      font-weight: 600;
+    }
+    
+    /* Dinner Section */
+    .dinner {
+      background: linear-gradient(135deg, #FFE5E5 0%, #FFD6D6 100%);
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 30px;
+      border-left: 4px solid #E85D04;
+    }
+    
+    .dinner h3 {
+      color: #E85D04;
+      font-size: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .dinner-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    
+    .dinner-suggestion {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .dinner-address {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    
+    .dinner-tips {
+      font-size: 14px;
+      color: #555;
+      background: rgba(255,255,255,0.5);
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px;
+      margin-top: 40px;
+      color: #888;
+      font-size: 12px;
+      border-top: 1px solid #eee;
+    }
+    
+    .footer-logo {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    @media print {
+      body {
+        background: white;
+      }
+      .page {
+        padding: 20px;
+        box-shadow: none;
+      }
+      .attraction {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-badge">🌴 2026 美国家庭之旅</div>
+      <h1>Day 3：名校与城市文化之旅</h1>
+      <div class="header-subtitle">全家同行 | 感受洛杉矶的多元魅力</div>
+      <div class="header-info">
+        <div class="header-info-item">📅 2026年1月31日</div>
+        <div class="header-info-item">📍 洛杉矶</div>
+        <div class="header-info-item">🚗 全家一辆车</div>
+        <div class="header-info-item">⏰ 星期六</div>
+      </div>
+    </div>
+    
+    <!-- Hotel Departure -->
+    <div class="hotel-departure">
+      <h3>🏨 酒店出发</h3>
+      <div class="hotel-departure-content">
+        <span><strong>Hyatt Place Glendale</strong></span>
+        <span class="arrow">→</span>
+        <span>UCLA</span>
+        <span class="distance">约25公里 | 约30分钟</span>
+      </div>
+    </div>
+    
+    <!-- Attraction 1: UCLA -->
+    <div class="attraction">
+      <img src="/home/ubuntu/family-trip-usa/client/public/images/HC2as0f3o4YG.jpg" alt="UCLA" class="attraction-image">
+      <div class="attraction-content">
+        <div class="attraction-time">⏰ 09:00 - 10:30</div>
+        <h2 class="attraction-name">UCLA 加州大学洛杉矶分校</h2>
+        <p class="attraction-name-en">University of California, Los Angeles</p>
+        <p class="attraction-description">
+          美国顶尖公立大学，校园环境优美。参观标志性的罗伊斯礼堂和大草坪，感受名校学术氛围。
+        </p>
+        <div class="attraction-highlights">
+          <span class="highlight-tag">罗伊斯礼堂</span>
+          <span class="highlight-tag">校园大草坪</span>
+          <span class="highlight-tag">名校氛围</span>
+          <span class="highlight-tag">建筑欣赏</span>
+        </div>
+        <div class="attraction-tips">
+          <strong>🅿️ 停车指南：</strong>可停在 Structure 8 停车场（Westwood Plaza 旁）或 Lot 4，周末停车费约$14/天。从停车场步行到罗伊斯礼堂约5分钟。
+        </div>
+      </div>
+    </div>
+    
+    <!-- Distance -->
+    <div class="distance-indicator">
+      <div class="distance-line"></div>
+      <div class="distance-info">
+        <div class="to">→ 小东京</div>
+        <div>约22公里 | 约25分钟</div>
+      </div>
+      <div class="distance-line"></div>
+    </div>
+    
+    <!-- Attraction 2: Little Tokyo -->
+    <div class="attraction">
+      <img src="/home/ubuntu/family-trip-usa/client/public/images/cNViwmycJ3Ox.jpg" alt="小东京" class="attraction-image">
+      <div class="attraction-content">
+        <div class="attraction-time">⏰ 11:00 - 12:30</div>
+        <h2 class="attraction-name">小东京</h2>
+        <p class="attraction-name-en">Little Tokyo</p>
+        <p class="attraction-description">
+          洛杉矶的日本城，充满日式风情。在这里享用正宗日本料理，推荐大黑家拉面或寿司。
+        </p>
+        <div class="attraction-highlights">
+          <span class="highlight-tag">日式街区</span>
+          <span class="highlight-tag">正宗拉面</span>
+          <span class="highlight-tag">日本文化</span>
+          <span class="highlight-tag">Arts District</span>
+        </div>
+        <div class="attraction-tips">
+          <strong>🅿️ 停车指南：</strong>建议停在 Japanese Village Plaza 停车场（335 E 2nd St）或 Weller Court 停车场（123 Astronaut E S Onizuka St），费用约$5-10。吃完午饭后步行去天使铁路（约1公里，10-15分钟），车停在这里不用动。<br><br>
+          <strong>🍜 午餐推荐：</strong>大黑家拉面 Daikokuya
+        </div>
+      </div>
+    </div>
+    
+    <!-- Distance -->
+    <div class="distance-indicator">
+      <div class="distance-line"></div>
+      <div class="distance-info">
+        <div class="to">→ 天使铁路</div>
+        <div>约1公里 | 约10-15分钟步行</div>
+      </div>
+      <div class="distance-line"></div>
+    </div>
+    
+    <!-- Attraction 3: Angels Flight -->
+    <div class="attraction">
+      <img src="/home/ubuntu/family-trip-usa/client/public/images/lOl1JS8w4Pui.jpg" alt="天使铁路" class="attraction-image">
+      <div class="attraction-content">
+        <div class="attraction-time">⏰ 13:30 - 15:15</div>
+        <h2 class="attraction-name">天使铁路 & 最后一家书店</h2>
+        <p class="attraction-name-en">Angels Flight & The Last Bookstore</p>
+        <p class="attraction-description">
+          天使铁路是世界上最短的铁路，复古橙色车厢极具特色。最后一家书店是洛杉矶最有特色的独立书店，书籍隧道和艺术装置非常适合拍照。
+        </p>
+        <div class="attraction-highlights">
+          <span class="highlight-tag">复古铁路</span>
+          <span class="highlight-tag">书籍隧道</span>
+          <span class="highlight-tag">艺术装置</span>
+          <span class="highlight-tag">拍照打卡</span>
+        </div>
+        <div class="attraction-tips">
+          <strong>🚶 步行前往：</strong>从小东京步行过来，车停在小东京不用动。天使铁路和最后一家书店步行距离5分钟，先坐铁路上山，再步行去书店。<br><br>
+          <strong>🎫 车票：</strong>$1/次 | <a href="https://www.angelsflight.org/">官网购票</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Distance -->
+    <div class="distance-indicator">
+      <div class="distance-line"></div>
+      <div class="distance-info">
+        <div class="to">→ Greek Theatre停车场</div>
+        <div>约13公里 | 约20分钟（返回小东京取车）</div>
+      </div>
+      <div class="distance-line"></div>
+    </div>
+    
+    <!-- Attraction 4: Griffith Observatory -->
+    <div class="attraction">
+      <img src="/home/ubuntu/family-trip-usa/client/public/images/AzHiJAJPplKO.webp" alt="格里菲斯天文台" class="attraction-image">
+      <div class="attraction-content">
+        <div class="attraction-time">⏰ 16:00 - 18:30</div>
+        <h2 class="attraction-name">格里菲斯天文台</h2>
+        <p class="attraction-name-en">Griffith Observatory</p>
+        <p class="attraction-description">
+          洛杉矶最佳观景点，可远眺好莱坞标志。傍晚时分前往，欣赏洛杉矶从黄昏到亮灯的全过程，夜景绝美。
+        </p>
+        <div class="attraction-highlights">
+          <span class="highlight-tag">Hollywood Sign</span>
+          <span class="highlight-tag">洛杉矶夜景</span>
+          <span class="highlight-tag">天文展览</span>
+          <span class="highlight-tag">免费参观</span>
+        </div>
+        <div class="attraction-tips">
+          <strong>🅿️ 停车指南：</strong>停在 Greek Theatre 停车场（2700 N Vermont Ave），然后乘坐免费摆渡车（DASH Observatory Shuttle）上山，约10分钟一班。这样可以避免天文台停车场满员的问题，尤其是周末和日落时分。Greek Theatre停车费约$10-15。
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dinner -->
+    <div class="dinner">
+      <h3>🍽️ 晚餐安排</h3>
+      <div class="dinner-name">活粥王 (Tasty Garden)</div>
+      <div class="dinner-suggestion">推荐：粥品、点心、广式小炒</div>
+      <div class="dinner-address">📍 288 W Valley Blvd, Alhambra, CA 91801</div>
+      <div class="dinner-tips">
+        💡 从格里菲斯天文台开车约20分钟到达，推荐皂火粥和烧鸭
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-logo">✈️</div>
+      <p>2026 美国家庭之旅 | Day 3 行程单</p>
+      <p>祝旅途愉快！</p>
+    </div>
+  </div>
+</body>
+</html>

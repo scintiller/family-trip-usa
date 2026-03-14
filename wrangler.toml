@@ -1,0 +1,17 @@
+name = "family-trip-usa"
+type = "javascript"
+main = "dist/index.js"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "family-trip-usa-prod"
+
+[build]
+command = "pnpm run build"
+cwd = "."
+watch_paths = ["client/**/*", "server/**/*", "shared/**/*"]
+
+[[build.upload_rules]]
+type = "CompiledContentFallthrough"
+globs = ["**/*"]
+fallthrough = true

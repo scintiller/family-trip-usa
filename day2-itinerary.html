@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 2 行程单 - 西区艺术与海滨之旅</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%);
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+      color: white;
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    }
+    
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .header-subtitle {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .header-info {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .header-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    
+    /* Overview Section */
+    .overview {
+      background: #fffbeb;
+      padding: 25px 30px;
+      border-bottom: 1px solid #fde68a;
+    }
+    
+    .overview h2 {
+      color: #b45309;
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .overview-item {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      border-left: 4px solid #f59e0b;
+    }
+    
+    .overview-item-label {
+      font-size: 12px;
+      color: #92400e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .overview-item-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: #333;
+      margin-top: 5px;
+    }
+    
+    /* Timeline */
+    .timeline {
+      padding: 30px;
+    }
+    
+    .timeline-title {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f59e0b;
+    }
+    
+    .timeline-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 60px;
+      top: 80px;
+      bottom: -30px;
+      width: 2px;
+      background: linear-gradient(to bottom, #f59e0b, #fde68a);
+    }
+    
+    .timeline-item:last-child::before {
+      display: none;
+    }
+    
+    .timeline-time {
+      width: 120px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+    
+    .timeline-time-badge {
+      background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-block;
+    }
+    
+    .timeline-content {
+      flex: 1;
+      background: #fafafa;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .timeline-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    
+    .timeline-info {
+      padding: 20px;
+    }
+    
+    .timeline-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+    
+    .timeline-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    
+    .timeline-name-en {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    
+    .timeline-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+    
+    .timeline-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .timeline-highlight {
+      background: #fff7ed;
+      color: #c2410c;
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+    }
+    
+    .timeline-tip {
+      background: #fef9c3;
+      border-left: 3px solid #eab308;
+      padding: 10px 15px;
+      margin-top: 15px;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      color: #713f12;
+    }
+    
+    /* Distance indicator */
+    .distance-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 0;
+      margin-left: 120px;
+    }
+    
+    .distance-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(to right, #fde68a, #f59e0b, #fde68a);
+      max-width: 200px;
+    }
+    
+    .distance-info {
+      background: white;
+      border: 2px solid #f59e0b;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #b45309;
+      white-space: nowrap;
+    }
+    
+    /* Dinner Section */
+    .dinner {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      margin: 0 30px 30px;
+      padding: 25px;
+      border-radius: 15px;
+    }
+    
+    .dinner h3 {
+      color: #92400e;
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .dinner-content {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .dinner-icon {
+      width: 60px;
+      height: 60px;
+      background: #f59e0b;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    
+    .dinner-info h4 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    
+    .dinner-info p {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    /* Footer */
+    .footer {
+      background: #333;
+      color: white;
+      padding: 25px 30px;
+      text-align: center;
+    }
+    
+    .footer p {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    
+    .footer-emoji {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+      }
+      .page {
+        box-shadow: none;
+      }
+      .timeline-item {
+        page-break-inside: avoid;
+      }
+    }
+    
+    @page {
+      size: A4;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-badge">🌴 2026 加州之旅</div>
+      <h1>Day 2：西区艺术与海滨之旅</h1>
+      <p class="header-subtitle">分头行动 | 你在图书馆办公</p>
+      <div class="header-info">
+        <div class="header-info-item">
+          <span>📅</span>
+          <span>2026年1月30日 星期五</span>
+        </div>
+        <div class="header-info-item">
+          <span>📍</span>
+          <span>洛杉矶 Los Angeles</span>
+        </div>
+        <div class="header-info-item">
+          <span>🚗</span>
+          <span>你开车送后自驾 / 父母妹妹打车</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Overview -->
+    <div class="overview">
+      <h2>🏨 今日出发</h2>
+      <div class="overview-grid">
+        <div class="overview-item">
+          <div class="overview-item-label">出发酒店</div>
+          <div class="overview-item-value">Hyatt Place Glendale</div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-item-label">第一站</div>
+          <div class="overview-item-value">盖蒂中心</div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-item-label">距离</div>
+          <div class="overview-item-value">约18公里</div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-item-label">车程</div>
+          <div class="overview-item-value">约25分钟</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Timeline -->
+    <div class="timeline">
+      <h2 class="timeline-title">📍 今日行程</h2>
+      
+      <!-- Getty Center -->
+      <div class="timeline-item">
+        <div class="timeline-time">
+          <div class="timeline-time-badge">10:00 - 13:30</div>
+        </div>
+        <div class="timeline-content">
+          <img src="file:///home/ubuntu/family-trip-usa/client/public/images/vvDBSu0J42jx.webp" class="timeline-image" alt="盖蒂中心">
+          <div class="timeline-info">
+            <span class="timeline-badge">👨‍👩‍👧 父母+妹妹</span>
+            <h3 class="timeline-name">盖蒂中心</h3>
+            <p class="timeline-name-en">The Getty Center</p>
+            <p class="timeline-desc">世界级艺术博物馆，坐落于山顶，可俯瞰整个洛杉矶。乘坐免费小火车上山，欣赏现代建筑、精美花园和珍贵艺术收藏。你送他们到达后去图书馆办公。</p>
+            <div class="timeline-highlights">
+              <span class="timeline-highlight">🚃 免费小火车</span>
+              <span class="timeline-highlight">🏛️ 现代建筑</span>
+              <span class="timeline-highlight">🌸 中央花园</span>
+              <span class="timeline-highlight">🌆 俯瞰LA全景</span>
+              <span class="timeline-highlight">🎨 艺术收藏</span>
+            </div>
+            <div class="timeline-tip">💡 小贴士：馆内有餐厅可解决午餐</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="distance-indicator">
+        <div class="distance-line"></div>
+        <div class="distance-info">↓ 约35公里 · 约40分钟 → 曼哈顿海滩</div>
+        <div class="distance-line"></div>
+      </div>
+      
+      <!-- West LA Library -->
+      <div class="timeline-item">
+        <div class="timeline-time">
+          <div class="timeline-time-badge">10:30 - 17:30</div>
+        </div>
+        <div class="timeline-content">
+          <img src="file:///home/ubuntu/family-trip-usa/client/public/images/hero-la.jpg" class="timeline-image" alt="West LA图书馆">
+          <div class="timeline-info">
+            <span class="timeline-badge">👤 你</span>
+            <h3 class="timeline-name">West LA图书馆</h3>
+            <p class="timeline-name-en">West Los Angeles Regional Branch Library</p>
+            <p class="timeline-desc">你在这里办公一整天，下午5:30结束后去圣塔莫尼卡海滩接父母和妹妹。</p>
+            <div class="timeline-highlights">
+              <span class="timeline-highlight">💻 办公</span>
+              <span class="timeline-highlight">🤫 安静环境</span>
+              <span class="timeline-highlight">📶 免费WiFi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Manhattan Beach -->
+      <div class="timeline-item">
+        <div class="timeline-time">
+          <div class="timeline-time-badge">14:00 - 15:00</div>
+        </div>
+        <div class="timeline-content">
+          <img src="file:///home/ubuntu/family-trip-usa/client/public/images/yNplUQMAUoia.jpg" class="timeline-image" alt="曼哈顿海滩">
+          <div class="timeline-info">
+            <span class="timeline-badge">👨‍👩‍👧 父母+妹妹</span>
+            <h3 class="timeline-name">曼哈顿海滩</h3>
+            <p class="timeline-name-en">Manhattan Beach</p>
+            <p class="timeline-desc">洛杉矶最美的海滩之一，沙滩细腻，海水清澈。标志性的圆形码头非常适合拍照，可以看到冲浪者和沙滩排球运动员。</p>
+            <div class="timeline-highlights">
+              <span class="timeline-highlight">🌊 圆形码头</span>
+              <span class="timeline-highlight">🏖️ 细腻沙滩</span>
+              <span class="timeline-highlight">🏄 冲浪观赏</span>
+              <span class="timeline-highlight">🚶 海滨漫步</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="distance-indicator">
+        <div class="distance-line"></div>
+        <div class="distance-info">↓ 约15公里 · 约25分钟 → Abbot Kinney大道</div>
+        <div class="distance-line"></div>
+      </div>
+      
+      <!-- Abbot Kinney -->
+      <div class="timeline-item">
+        <div class="timeline-time">
+          <div class="timeline-time-badge">15:30 - 16:30</div>
+        </div>
+        <div class="timeline-content">
+          <img src="file:///home/ubuntu/family-trip-usa/client/public/images/uplKq9gON2fQ.jpg" class="timeline-image" alt="Abbot Kinney大道">
+          <div class="timeline-info">
+            <span class="timeline-badge">👨‍👩‍👧 父母+妹妹</span>
+            <h3 class="timeline-name">Abbot Kinney大道</h3>
+            <p class="timeline-name-en">Abbot Kinney Boulevard</p>
+            <p class="timeline-desc">被誉为"美国最酷的街道"，汇集了精品店、画廊、咖啡馆和餐厅。非常适合漫步和拍照。</p>
+            <div class="timeline-highlights">
+              <span class="timeline-highlight">🛍️ 精品店</span>
+              <span class="timeline-highlight">🖼️ 艺术画廊</span>
+              <span class="timeline-highlight">☕ 网红咖啡</span>
+              <span class="timeline-highlight">📷 街拍圣地</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="distance-indicator">
+        <div class="distance-line"></div>
+        <div class="distance-info">↓ 约1公里 · 约5分钟步行 → Venice滑板公园</div>
+        <div class="distance-line"></div>
+      </div>
+      
+      <!-- Venice Skate Park -->
+      <div class="timeline-item">
+        <div class="timeline-time">
+          <div class="timeline-time-badge">16:45 - 17:30</div>
+        </div>
+        <div class="timeline-content">
+          <img src="file:///home/ubuntu/family-trip-usa/client/public/images/yNplUQMAUoia.jpg" class="timeline-image" alt="Venice滑板公园">
+          <div class="timeline-info">
+            <span class="timeline-badge">👨‍👩‍👧 父母+妹妹</span>
+            <h3 class="timeline-name">Venice滑板公园</h3>
+            <p class="timeline-name-en">Venice Skate Park</p>
+            <p class="timeline-desc">世界著名的滑板圣地，位于Venice海滩旁。可以观看滑板高手表演各种特技，感受加州的街头文化氛围。</p>
+            <div class="timeline-highlights">
+              <span class="timeline-highlight">🛹 滑板表演</span>
+              <span class="timeline-highlight">🎸 街头文化</span>
+              <span class="timeline-highlight">🏖️ 海滩氛围</span>
+              <span class="timeline-highlight">📸 拍照打卡</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="distance-indicator">
+        <div class="distance-line"></div>
+        <div class="distance-info">↓ 约5公里 · 约10分钟 → 圣塔莫尼卡海滩</div>
+        <div class="distance-line"></div>
+      </div>
+      
+      <!-- Santa Monica -->
+      <div class="timeline-item">
+        <div class="timeline-time">
+          <div class="timeline-time-badge">18:00 - 19:00</div>
+        </div>
+        <div class="timeline-content">
+          <img src="file:///home/ubuntu/family-trip-usa/client/public/images/yNplUQMAUoia.jpg" class="timeline-image" alt="圣塔莫尼卡海滩">
+          <div class="timeline-info">
+            <span class="timeline-badge">👨‍👩‍👧 全家集合</span>
+            <h3 class="timeline-name">圣塔莫尼卡海滩</h3>
+            <p class="timeline-name-en">Santa Monica Beach</p>
+            <p class="timeline-desc">著名的海滨度假胜地，66号公路的终点。在码头上找到标志性的"Route 66 End of Trail"路牌打卡，欣赏太平洋日落。你下班后来这里接他们，全家一起看日落。</p>
+            <div class="timeline-highlights">
+              <span class="timeline-highlight">🛣️ 66号公路终点</span>
+              <span class="timeline-highlight">🎡 圣塔莫尼卡码头</span>
+              <span class="timeline-highlight">🌅 太平洋日落</span>
+              <span class="timeline-highlight">👨‍👩‍👧 全家集合</span>
+            </div>
+            <div class="timeline-tip">💡 小贴士：你下班后来这里接他们，一起看日落</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dinner -->
+    <div class="dinner">
+      <h3>🍽️ 晚餐安排</h3>
+      <div class="dinner-content">
+        <div class="dinner-icon">🍲</div>
+        <div class="dinner-info">
+          <h4>Sun Nong Dan（Koreatown）</h4>
+          <p>推荐：招牌牛排骨汤（Galbi-jjim）</p>
+          <p style="margin-top: 8px; font-size: 13px; color: #888;">韩国城著名的韩式餐厅，牛排骨汤浓郁鲜美，非常适合一天游玩后暖暖身子。</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-emoji">✈️ 🌴 🌊</div>
+      <p>2026 美国西海岸家庭之旅 · Day 2 行程单</p>
+      <p style="margin-top: 5px;">祝旅途愉快！Have a wonderful trip!</p>
+    </div>
+  </div>
+</body>
+</html>
